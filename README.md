@@ -6,7 +6,12 @@ Assignment:
 A univariate time series is a sequence of values ordered over time, expressing the variation of a certain phenomenon over time. For each pair of points, the first element corresponds to a specific moment or time interval, while the second is the value of a quantity related to that moment or interval.
 The file 'data.csv' contains the time series of the total monthly number of passengers in thousands on international airlines, from January 1949 to December 1960. The first element of each row represents the date and is in Year-Month format.
 The data is formatted as follows:
-                                  ![image](https://github.com/MaCarmi/appelloprogrammazione/assets/106955615/71bc4954-069f-4012-94aa-b6c388a0a013)
+
+                                 date,passengers
+                                 1949-01,112
+                                 1949-02,118
+                                 1949-03,132
+                                 ...
 We want to read this type of data and find for each year the month with the minimum and maximum number of passengers
 
 More information about the assignment:
