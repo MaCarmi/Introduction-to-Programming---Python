@@ -1,6 +1,6 @@
 class ExamException(Exception):
     pass
-class CSVTimeSeriesFlies:
+class CSVTimeSeriesFile:
     def __init__(self, name):
 
         # Setto il nome del file
@@ -13,7 +13,7 @@ class CSVTimeSeriesFlies:
         try:
             my_file = open(self.name, 'r') #funzione open() apre il file e 'r' sta letteralmente per reading (lettura)
             my_file.readline() #readline mi permette di leggere la prima riga del file (fino a \n)(per capire se il file è leggibile)
-        except Exception as e:
+        except:
             self.can_read = False #nel caso in cui il file non sia leggibile can_Read diventa false (servirà per dopo)
 
 
@@ -41,27 +41,12 @@ class CSVTimeSeriesFlies:
                 # Faccio lo split di ogni linea sulla virgola
                 elements = line.split(',')
 
-                # Posso anche pulire il carattere di newline
-                # dall'ultimo elemento con la funzione strip():
-                #in questo caso uso -1 perché non ho idea di quanti campi ci siano, ma so che sicuramente
-                #elements[-1] sarà l'ultimo
-                elements[-1] = elements[-1].strip()
-
-                #questo ciclo for è essenziale per far si che al controllo successivo arrivino
-                #dei dati che abbiano come primo campo 4 cifre minime all'inizio
-                #mi serve per considerare anche righe del tipo ['prova','ciao', '1950-03', '192']
-                #uso elements e non element perché io ho bisogno di studiare ogni volta solo il primo campo
-                #sono già dentro ad un for e quindi elements cambia ogni volta
-                for _ in elements:
-                    elements[0] = elements[0].strip()#mi permette di pulire casi in cui ho [' 1949-01', '231']
-                    #mi controlla se il primo campo ha meno di 7 caratteri e in caso affermativo me lo elimina
-                    if len(elements[0]) < 7:
-                        elements.pop(0)
-                        #elements[0].strip()
-                    #sono sicuro che il primo campo ha almeno 7 caratteri e quindi posso controllare che rispetti il formato di data
-                    elif not elements[0][:4].isdigit() and not elements[0][5:7].isdigit() and elements[0][4] != "-":
-                        elements.pop(0)
-
+                #Sfrutto questo ciclo for per strippare tutti i campi di ogni riga
+                #lo uso per pulire righe del tipo ['1949-01 ', ' 123']
+                #che possiedono dati validi, ma a causa dello spazio in più,
+                #non passano per il filtro
+                for i in range(len(elements)):
+                    elements[i] = elements[i].strip()
 
 
                 # Controllo che ci siano almeno due campi e prendo quelli con data e valore (nel caso ci sia solo un campo, ignoro la riga)
@@ -77,6 +62,7 @@ class CSVTimeSeriesFlies:
                 elements[0][:4].isdigit() and \
                 elements[0][5:7].isdigit() and \
                 elements[1].isdigit() and \
+                int(elements[1]) >= 0 and \
                 (elements[0][5:7]<="12" and elements[0][5:7]>="01"):
                     if prev_date is None or elements[0] > prev_date:
                         data.append([elements[0], int(elements[1])]) #rendo elements degli interi e non stringe di valori numerici
@@ -144,15 +130,3 @@ def find_min_max(time_series):
             result_dict[year]["max"].append(month)
 
     return result_dict
-
-
-
-time_series_file = CSVTimeSeriesFlies(name = 'data2.csv')
-time_series = time_series_file.get_data()
-print(time_series)
-
-time_seri = ['ciao', 'come']
-
-prova = find_min_max(time_series)
-print(prova)
-
