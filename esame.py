@@ -13,7 +13,7 @@ class CSVTimeSeriesFile:
         try:
             my_file = open(self.name, 'r') #funzione open() apre il file e 'r' sta letteralmente per reading (lettura)
             my_file.readline() #readline mi permette di leggere la prima riga del file (fino a \n)(per capire se il file è leggibile)
-        except Exception as e:
+        except Exception:
             self.can_read = False #nel caso in cui il file non sia leggibile can_Read diventa false (servirà per dopo)
 
 
