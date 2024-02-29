@@ -13,7 +13,7 @@ class CSVTimeSeriesFile:
         try:
             my_file = open(self.name, 'r') #funzione open() apre il file e 'r' sta letteralmente per reading (lettura)
             my_file.readline() #readline mi permette di leggere la prima riga del file (fino a \n)(per capire se il file è leggibile)
-        except:
+        except Exception as e:
             self.can_read = False #nel caso in cui il file non sia leggibile can_Read diventa false (servirà per dopo)
 
 
@@ -82,11 +82,6 @@ class CSVTimeSeriesFile:
                 else:
                     pass
 
-
-
-
-
-
             # Chiudo il file
             my_file.close()
 
@@ -100,15 +95,15 @@ def find_min_max(time_series):
                         #avrei potuto usare anche una lista? no perché senno sarebbe stato piu complesso controllare tutto
                         #per singolo anno, col dizionario chiamo l'anno interessato come chiave
 
-    for data, valore in time_series:
-        anno = data.split('-')[0] #sto prendendo la prima riga e la divido fino a "-", dopo di che, da questa divisione
+    for date, value in time_series:
+        year = date.split('-')[0] #sto prendendo la prima riga e la divido fino a "-", dopo di che, da questa divisione
                                   #prendo solamente il primo valore (che sarebbe l'anno)
         #posso farlo perché do per scontato che il formato delle date sia YYYY-MM
-        if anno not in dictionary_all:
-            dictionary_all[anno] = [] #controllo se un anno è già utilizzato come chiave del dizionario,
+        if year not in dictionary_all:
+            dictionary_all[year] = [] #controllo se un anno è già utilizzato come chiave del dizionario,
                                       #in caso contrario creo un nuovo elemento che ha come chiave l'anno
 
-        dictionary_all[anno].append(valore) #con append() inserisco in coda il valore
+        dictionary_all[year].append(value) #con append() inserisco in coda il valore
 
     for row in time_series:
 
